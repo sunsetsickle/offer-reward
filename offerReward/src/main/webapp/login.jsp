@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%
     String basePath = request.getScheme() + "://" +
             request.getServerName() + ":" + request.getServerPort() +
@@ -17,9 +17,9 @@
     $(function () {
         $("#loginBtn").click(function () {
             $("#msg").html("");
-            var username= $.trim($("#username").val());
-            var password=$.trim($("#password").val());
-            var code=$("#code").val();
+            const username = $.trim($("#username").val());
+            const password = $.trim($("#password").val());
+            const code = $("#code").val();
 
             if (username===''||password===''){
                 $("#msg").html("用户名密码不能为空");
@@ -77,7 +77,7 @@
         <div class="user-box">
             <input type="text" required="" id="code" style="width: 163px">
             <label>验证码</label>
-            <img src="code.do" onclick="myRefresh(this)" style="position:relative;top: 13px;right: -3px;">
+            <img src="code.do" onclick="myRefresh(this)" alt="验证码" style="position:relative;top: 13px;right: -3px;">
         </div>
 
         <a id="loginBtn" style="cursor:pointer;">
