@@ -17,6 +17,7 @@
     $(function () {
         $("#loginBtn").click(function () {
             $("#msg").html("");
+            //var const let的区别
             const username = $.trim($("#username").val());
             const password = $.trim($("#password").val());
             const code = $("#code").val();
