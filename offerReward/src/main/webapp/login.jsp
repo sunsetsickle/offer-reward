@@ -78,7 +78,7 @@
         <div class="user-box">
             <input type="text" required="" id="code" style="width: 163px">
             <label>验证码</label>
-            <img src="code.do" onclick="myRefresh(this)" alt="验证码" style="position:relative;top: 13px;right: -3px;">
+            <img src="code.do" onclick="myRefresh(this)" alt="验证码" style="position:relative;top: 13px;right: -3px;" width="150px">
         </div>
 
         <a id="loginBtn" style="cursor:pointer;">

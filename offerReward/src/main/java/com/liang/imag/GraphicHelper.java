@@ -1,6 +1,8 @@
 package com.liang.imag;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,22 +10,28 @@ import java.io.OutputStream;
 import java.util.Random;
 
 public final class GraphicHelper {
-    /**
-     * 以字符串形式返回生成的验证码，同时输出一个图片
-     *
-     * @param width
-     *            图片的宽度
-     * @param height
-     *            图片的高度
-     * @param imgType
-     *            图片的类型
-     * @param output
-     *            图片的输出流(图片将输出到这个流中)
-     * @return 返回所生成的验证码(字符串)
-     */
-    public static String create(final int width, final int height, final String imgType, OutputStream output) {
-        StringBuffer sb = new StringBuffer();//对字符串的操作频繁，使用StringBuffer
-        Random random = new Random();
+
+    private static final Random random = new Random();
+    private static final char[] CHARS = { '2', '3', '4', '5', '6', '7', '8',
+            '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm',
+            'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+    public static StringBuilder getCaptchaString(){
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < 6; i++)
+        {
+            builder.append(CHARS[random.nextInt(CHARS.length)]);
+        }
+        return builder;
+
+    }
+
+    public static void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final OutputStream output = response.getOutputStream(); // 获得可以向客户端返回图片的输出流
+        final String imgType="jpeg";
+        final int width=180;
+        final int height=50;
+        //StringBuilder sb = new StringBuilder();//对字符串的操作频繁，使用StringBuffer
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -49,16 +57,20 @@ public final class GraphicHelper {
             graphic.drawLine(x, y, x + w * signA, y + h * signB);
         }
 
+
+
         // 在 "画板"上绘制字母
         graphic.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
+        StringBuilder captchaString=getCaptchaString();
+        String s;
         for (int i = 0; i < 6; i++) {
-            final int temp = random.nextInt(26) + 97;
-            String s = String.valueOf((char) temp);
-            sb.append(s);
+            s = String.valueOf((char)captchaString.codePointAt(i));
             graphic.setColor(colors[random.nextInt(colors.length)]);
             graphic.drawString(s, i * (width / 6), height - (height / 3));
         }
         graphic.dispose();
+//        将生成的验证码字符串存放进session中
+        request.getSession(true).setAttribute("captchaString",captchaString.toString());
 
         try {
             ImageIO.write(image, imgType, output);
@@ -66,7 +78,7 @@ public final class GraphicHelper {
             e.printStackTrace();
         }
 
-        return sb.toString();//返回值是生成的验证码字符串
+
 
     }
 }

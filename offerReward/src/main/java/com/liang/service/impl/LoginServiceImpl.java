@@ -3,6 +3,7 @@ package com.liang.service.impl;
 import com.liang.dao.UserDao;
 import com.liang.domain.User;
 import com.liang.exception.LoginException;
+import com.liang.imag.GraphicHelper;
 import com.liang.service.LoginService;
 import org.springframework.stereotype.Service;
 
